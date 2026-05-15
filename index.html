@@ -1,102 +1,173 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Empire Community</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{
-margin:0;
-padding:0;
-font-family:Arial;
-background:linear-gradient(135deg,#000,#1a1a1a);
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-color:white;
+  margin:0;
+  font-family:Arial;
+  background:linear-gradient(135deg,#000,#1a1200);
+  color:white;
 }
-
 .box{
-width:350px;
-padding:30px;
-background:#111;
-border-radius:20px;
-text-align:center;
-box-shadow:0 0 25px gold;
+  max-width:380px;
+  margin:70px auto;
+  background:#111;
+  padding:25px;
+  border-radius:20px;
+  text-align:center;
+  box-shadow:0 0 25px gold;
 }
-
-h1{
-color:gold;
-font-size:32px;
+h1,h2{color:gold}
+input,select{
+  width:90%;
+  padding:13px;
+  margin:8px;
+  border-radius:10px;
+  border:none;
 }
-
-input{
-width:100%;
-padding:14px;
-margin-top:15px;
-border:none;
-border-radius:10px;
-font-size:16px;
-}
-
 button{
-width:100%;
-padding:14px;
-margin-top:20px;
-border:none;
-border-radius:10px;
-background:gold;
-color:black;
-font-size:18px;
-font-weight:bold;
-cursor:pointer;
+  width:95%;
+  padding:14px;
+  margin:10px;
+  border:none;
+  border-radius:12px;
+  background:gold;
+  font-weight:bold;
+  font-size:16px;
 }
-
-button:hover{
-background:white;
+.card{
+  background:#111;
+  margin:15px;
+  padding:18px;
+  border-radius:18px;
+  box-shadow:0 0 12px gold;
 }
-
-p{
-color:#ccc;
-}
+.small{color:#ccc;font-size:14px}
 </style>
 </head>
-<script>
-function showDashboard(){
-  document.body.innerHTML = `
-  <div style="padding:20px;color:white;background:#0a0a0a;min-height:100vh;font-family:Arial;">
-    <div style="background:gold;color:black;padding:20px;text-align:center;font-size:28px;font-weight:bold;">
-      👑 Empire Community Dashboard
-    </div>
 
-    <div style="background:#111;margin-top:25px;padding:20px;border-radius:20px;box-shadow:0 0 20px gold;">
-      <h2 style="color:gold;">Welcome Back 👑</h2>
-      <p><b>Username:</b> @empire_member</p>
-      <p><b>Empire Rank:</b> 🔥 Active Member</p>
-      <p><b>Referral Members:</b> 0</p>
-      <p><b>Next Rank:</b> Add 3 Members 🚀</p>
-      <button style="width:100%;padding:15px;background:gold;border:none;border-radius:12px;font-weight:bold;">
-        Invite Members
-      </button>
-    </div>
-  </div>`;
-}
-</script>
 <body>
 
-<div class="box">
-<h1>👑 Empire Community</h1>
+<div id="app" class="box">
+  <h1>👑 Empire Community</h1>
+  <p>From Members To Leaders 🚀</p>
 
-<p>From Members To Leaders 🚀</p>
+  <input id="username" placeholder="Enter Username">
+  <input id="password" type="password" placeholder="Enter Password">
 
-<input type="text" placeholder="Enter Empire ID">
+  <button onclick="login()">Login</button>
+  <button onclick="registerPage()">Create Empire ID</button>
+  <button onclick="plansPage()">Buy Empire ID</button>
 
-<input type="password" placeholder="Enter Password">
-
-<button onclick="window.location.href='dashboard.html'">Login</button>
+  <p class="small">Basic • VIP • Elite Membership</p>
+</div>
 
 <script>
-<button onclick="showDashboard()">Login</button>
+function registerPage(){
+  document.getElementById("app").innerHTML = `
+    <h1>👑 Create Empire ID</h1>
+    <input id="newuser" placeholder="Create Username">
+    <input id="newpass" type="password" placeholder="Create Password">
+    <select id="plan">
+      <option>Basic ₹49</option>
+      <option>VIP ₹199</option>
+      <option>Elite ₹499</option>
+    </select>
+    <button onclick="register()">Register Now</button>
+    <button onclick="location.reload()">Back</button>
+  `;
+}
+
+function register(){
+  let u=document.getElementById("newuser").value;
+  let p=document.getElementById("newpass").value;
+  let plan=document.getElementById("plan").value;
+
+  if(u=="" || p==""){
+    alert("Username आणि Password भरा");
+    return;
+  }
+
+  localStorage.setItem("user",u);
+  localStorage.setItem("pass",p);
+  localStorage.setItem("plan",plan);
+
+  alert("Empire ID Created 👑");
+  location.reload();
+}
+
+function login(){
+  let u=document.getElementById("username").value;
+  let p=document.getElementById("password").value;
+
+  if(u==localStorage.getItem("user") && p==localStorage.getItem("pass")){
+    dashboard();
+  }else{
+    alert("Wrong Username or Password");
+  }
+}
+
+function dashboard(){
+  let user=localStorage.getItem("user");
+  let plan=localStorage.getItem("plan");
+
+  document.body.innerHTML = `
+    <div style="padding:20px;">
+      <h1>👑 Empire Dashboard</h1>
+
+      <div class="card">
+        <h2>Welcome @${user}</h2>
+        <p><b>Plan:</b> ${plan}</p>
+        <p><b>Rank:</b> 🔥 Active Member</p>
+        <p><b>Referral Members:</b> 0</p>
+        <p><b>Next Target:</b> Add 3 Members 🚀</p>
+      </div>
+
+      <div class="card">
+        <h2>Empire Benefits</h2>
+        <p>✅ Premium Community Access</p>
+        <p>✅ Weekly Meetings</p>
+        <p>✅ Rank System</p>
+        <p>✅ Referral Rewards</p>
+        <p>✅ Leadership Opportunity</p>
+      </div>
+
+      <div class="card">
+        <h2>Invite Link</h2>
+        <p>Share this with your friends:</p>
+        <input value="https://empire-communityyy.netlify.app" readonly>
+        <button onclick="alert('Link copied idea ready 🚀')">Copy Invite</button>
+      </div>
+
+      <button onclick="location.reload()">Logout</button>
+    </div>
+  `;
+}
+
+function plansPage(){
+  document.getElementById("app").innerHTML = `
+    <h1>💸 Buy Empire ID</h1>
+    <div class="card">
+      <h2>Basic ₹49</h2>
+      <p>Main Access + Empire ID</p>
+    </div>
+    <div class="card">
+      <h2>VIP ₹199</h2>
+      <p>VIP Group + Meetings + Badge</p>
+    </div>
+    <div class="card">
+      <h2>Elite ₹499</h2>
+      <p>Leader Rank + Team Access</p>
+    </div>
+    <button onclick="registerPage()">Continue</button>
+    <button onclick="location.reload()">Back</button>
+  `;
+}
+</script>
+
+</body>
+</html>
   
